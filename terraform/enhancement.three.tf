@@ -21,6 +21,11 @@ resource "aws_dynamodb_table" "animals_test" {
 
   stream_enabled   = true
   stream_view_type = "NEW_AND_OLD_IMAGES"
+ 
+  replica = {
+    region_name = "us-west-2"
+  }
+  
 
   tags = {
     Name        = "enhancement-three"
@@ -29,9 +34,5 @@ resource "aws_dynamodb_table" "animals_test" {
 }
 
 
-resource "aws_dynamodb_table_replica" "animal_replica_us_west_2" {
-  table_name  = aws_dynamodb_table.animals_test
-  region_name = "us-west-2"
-}
 
 
