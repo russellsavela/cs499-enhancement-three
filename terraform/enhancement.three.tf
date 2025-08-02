@@ -19,8 +19,19 @@ resource "aws_dynamodb_table" "animals_test" {
     enabled        = true
   }
 
+  stream_enabled   = true
+  stream_view_type = "NEW_AND_OLD_IMAGES"
+
   tags = {
     Name        = "enhancement-three"
     Environment = "dev"
   }
 }
+
+
+resource "aws_dynamodb_table_replica" "animal_replica_us_west_2" {
+  table_name  = aws_dynamodb_table.animals_test
+  region_name = "us-west-2"
+}
+
+
