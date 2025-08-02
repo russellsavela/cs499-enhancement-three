@@ -4,6 +4,9 @@
 
 resource "aws_dynamodb_table" "animals_test" {
   name           = "animals_test"
+  replica = {
+    region_name = "us-west-2"
+  }
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "animal_id"
 #  range_key      = ""
@@ -22,9 +25,6 @@ resource "aws_dynamodb_table" "animals_test" {
   stream_enabled   = true
   stream_view_type = "NEW_AND_OLD_IMAGES"
  
-  replica = {
-    region_name = "us-west-2"
-  }
   
 
   tags = {
