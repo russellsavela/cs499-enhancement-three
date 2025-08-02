@@ -1,0 +1,47 @@
+name: Enhancement Three Deployment - Russ Savela
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+      #paths: ["terraform/**"]
+
+  pull_request:
+    branches: [main]
+      #paths: ["terraform/**"]
+
+
+env:
+  TF_CLOUD_ORGANIZATION: "russell-savela-org"
+  TF_API_TOKEN: "${{ secrets.TERRAFORM_API_KEY }}"
+  TF_WORKSPACE: "enhancement-one"
+  CONFIG_DIRECTORY: "./"
+
+
+jobs:
+
+  deploy:
+    name: Deploy Enhancement Three
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_API_KEY }}
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20.x
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: us-east-1
+      - name: Initialise project and deploy terraform
+        run: |
+          cd terraform
+          terraform fmt
+          terraform init
+          terraform apply --auto-approve=true
