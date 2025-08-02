@@ -15,7 +15,7 @@ resource "aws_dynamodb_table" "animals_test" {
     type = "S"
   }
 
-  replica = {
+  replica  {
     region_name = "us-west-2"
   }
 
